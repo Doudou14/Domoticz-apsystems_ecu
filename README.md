@@ -25,8 +25,8 @@ url
 idx with your custom sensor values
 
 ## Start script
-If ECU C or R : Start the script with the command python3 /scripts/python/ECU/ECU-C-R.py
-If ECU B : Start the script with the command python3 /scripts/python/ECU/ECU-B.py
+* If ECU C or R : Start the script with the command python3 /scripts/python/ECU/ECU-C-R.py
+* If ECU B : Start the script with the command python3 /scripts/python/ECU/ECU-B.py
 
 ## Auto start
 To have the script start automatically after every reboot of the Raspberry Pi, add the following line in crontab
