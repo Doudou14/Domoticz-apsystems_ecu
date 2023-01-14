@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
  
-from APSystemsECUR import APSystemsECUR
+from APSystemsECU import APSystemsECU
 import time
 import asyncio
 import urllib.request
@@ -17,7 +17,7 @@ url = 'http://IP-Domoticz:8080/json.htm?'
 puntcomma = '\u003B'
  
 loop = asyncio.get_event_loop()
-ecu = APSystemsECUR(ecu_ip)
+ecu = APSystemsECU(ecu_ip)
  
 while True:
         try:
