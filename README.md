@@ -20,9 +20,9 @@ Add dummy sensor in Domoticz
 To run the python scripts on the Raspberry Pi Python 3.x to be installed.
 * Place APSystemECU.py and ECU-C-R.py or ECU-B (choose file from your ECU model) in your Domoticz folder under scripts/python/ECU
 * If ECU C or R open ECU-C-R.py or If ECU B open ECU-B.py and change :
-ecu_ip
-url
-idx with your custom sensor values
+-ecu_ip
+-url
+-idx with your custom sensor values
 
 ## Start script
 * If ECU C or R : Start the script with the command python3 /scripts/python/ECU/ECU-C-R.py
