@@ -1,7 +1,10 @@
 ![Home Assistant Dashboard](https://github.com/Doudou14/Domoticz-apsystems_ecu/blob/main/dashboard.jpg)
 # Domoticz APsystems ECU Integration
 This is an integration for [Domoticz](https://domoticz.com/) that adds support for the [APsystems](http://www.apsystems.com) Energy Communication Unit (ECU) so that you are able to monitor your PV installation (inverters) in detail. It currently supports ECU B - ECU C and ECU R
+
 The installation procedure is based on [bjorn-meiger](https://www.bjorn-meijer.nl/en/2021/05/01/realtime-readout-apsystems-in-domoticz/)
+
+Support 4 inverter on ECU C or R. Only 2 inverter on ECU B
 
 ## Add dummy sensors in Domoticz
 * Create a Dummy sensor in Domoticz and call it 'Virtual switches' or another clear name.
@@ -19,10 +22,13 @@ Add dummy sensor in Domoticz
 ## Install Plugin
 To run the python scripts on the Raspberry Pi Python 3.x to be installed.
 * Place APSystemECU.py and ECU-C-R.py or ECU-B (choose file from your ECU model) in your Domoticz folder under scripts/python/ECU
-* If ECU C or R open ECU-C-R.py or If ECU B open ECU-B.py and change :
--ecu_ip
--url
--idx with your custom sensor values
+* Open ECU-C-R.py or ECU-B.py and change :
+
+    ECU IP
+
+    Domoticz url
+
+    idx with your custom sensor values
 
 ## Start script
 * If ECU C or R : Start the script with the command python3 /scripts/python/ECU/ECU-C-R.py
@@ -30,7 +36,7 @@ To run the python scripts on the Raspberry Pi Python 3.x to be installed.
 
 ## Auto start
 To have the script start automatically after every reboot of the Raspberry Pi, add the following line in crontab
-* Sudo crontab -e
-* If ECU C or R Add : @reboot python3 /home/pi/domoticz/scripts/python/ECU/ECU-C-R.py
-* If ECU B Add : @reboot python3 /home/pi/domoticz/scripts/python/ECU/ECU-B.py
+* sudo crontab -e
+* If ECU C or R Add : @reboot python3 /home/USER/domoticz/scripts/python/ECU/ECU-C-R.py (Change USER)
+* If ECU B Add : @reboot python3 /home/USER/domoticz/scripts/python/ECU/ECU-B.py (Change USER)
 * Reboot the pi
