@@ -9,7 +9,7 @@ import urllib
 from pprint import pprint
  
  
-ecu_ip = "IP ECU-R"
+ecu_ip = "IP ECU-C or R"
 #Communication delay to ECU (sec)
 sleep = 300
  
