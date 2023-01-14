@@ -19,7 +19,7 @@ class APSystemsInvalidInverter(Exception):
     pass
 
 
-class APSystemsECUR:
+class APSystemsECU:
 
     def __init__(self, ipaddr, port=8899, raw_ecu=None, raw_inverter=None):
         self.ipaddr = ipaddr
