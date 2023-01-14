@@ -1,7 +1,7 @@
 ![Home Assistant Dashboard](https://github.com/Doudou14/Domoticz-apsystems_ecu/blob/main/dashboard.jpg)
 # Domoticz APsystems ECU Integration
 This is an integration for [Domoticz](https://domoticz.com/) that adds support for the [APsystems](http://www.apsystems.com) Energy Communication Unit (ECU) so that you are able to monitor your PV installation (inverters) in detail. It currently supports ECU B - ECU C and ECU R
-The installation procedure is based on[bjorn-meiger](https://www.bjorn-meijer.nl/en/2021/05/01/realtime-readout-apsystems-in-domoticz/)
+The installation procedure is based on [bjorn-meiger](https://www.bjorn-meijer.nl/en/2021/05/01/realtime-readout-apsystems-in-domoticz/)
 
 ## Add dummy sensors in Domoticz
 * Create a Dummy sensor in Domoticz and call it 'Virtual switches' or another clear name.
@@ -18,19 +18,17 @@ Add dummy sensor in Domoticz
 
 ## Install Plugin
 To run the python scripts on the Raspberry Pi Python 3.x to be installed.
-* Place APSystemECUR.py and ECU-R.py in your Domoticz folder under scripts/python/ECU-R
-* Open ECU-R.py and change :
+* Place APSystemECU.py and ECU-x.py (choose your ECU C/R or B) in your Domoticz folder under scripts/python/ECU
+* Open ECU-x.py and change :
 ecu_ip
 url
 idx with your custom sensor values
 
 ## Start script
-Start the script with the command python3 /scripts/python/ECU-R/ECU-R.py
+Start the script with the command python3 /scripts/python/ECU/ECU-x.py
 
 ## Auto start
 To have the script start automatically after every reboot of the Raspberry Pi, add the following line in crontab
 * Sudo crontab -e
-* Add : @reboot python3 /home/pi/domoticz/scripts/python/ECU-R/ECU-R.py
+* Add : @reboot python3 /home/pi/domoticz/scripts/python/ECU/ECU-x.py
 * Reboot the pi
-
-##The virtual switch is not working at the moment
