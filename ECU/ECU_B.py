@@ -26,8 +26,6 @@ ConsumptionInverter1Pannel3 = 198
 ConsumptionInverter1Pannel4 = 199
 ConsumptionInverter2Pannel1 = 200
 ConsumptionInverter2Pannel2 = 201
-ConsumptionInverter2Pannel3 = 202
-ConsumptionInverter2Pannel4 = 203
 TemperatureInverter1 = 177
 TemperatureInverter2 = 179
 Timestamp = 176
@@ -143,12 +141,6 @@ while True:
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
                         elif (i == 1) and (x == 1) :
                             getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter2Pannel2, 'svalue': (power)}
-                            webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
-                        elif (i == 1) and (x == 2) :
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter2Pannel3, 'svalue': (power)}
-                            webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
-                        elif (i == 1) and (x == 3) :
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter2Pannel4, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
  
         except Exception as err:
