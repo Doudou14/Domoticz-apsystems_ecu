@@ -17,18 +17,16 @@ ecu_ip = "IP ECU-B"
 url = 'http://IP-Domoticz:8080/json.htm?'
 
 #Change your idx
+Timestamp = 176
 SolarGeneration = 175
 SwitchInverter1 = 178
 SwitchInverter2 = 180
-ConsumptionInverter1Pannel1 = 196
-ConsumptionInverter1Pannel2 = 197
-ConsumptionInverter1Pannel3 = 198
-ConsumptionInverter1Pannel4 = 199
-ConsumptionInverter2Pannel1 = 200
-ConsumptionInverter2Pannel2 = 201
+ConsumptionPannel1 = 196  #Inverter 1
+ConsumptionPannel2 = 197  #Inverter 1
+ConsumptionPannel3 = 198  #Inverter 1 or 2
+ConsumptionPannel4 = 199  #Inverter 1 or 2
 TemperatureInverter1 = 177
 TemperatureInverter2 = 179
-Timestamp = 176
 SignalInverter1 = 210
 SignalInverter2 = 213
 VoltageInverter1 = 211
@@ -107,16 +105,16 @@ while True:
                             else :
                                 getVars = {'type' : 'command', 'param' : 'switchlight', 'idx': SwitchInverter1, 'switchcmd': 'Off'}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars))
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter1Pannel1, 'svalue': (power)}
+                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionPannel1, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
                         elif (i == 0) and (x == 1) :
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter1Pannel2, 'svalue': (power)}
+                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionPannel2, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
                         elif (i == 0) and (x == 2) :
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter1Pannel3, 'svalue': (power)}
+                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionPannel3, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
                         elif (i == 0) and (x == 3) :
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter1Pannel4, 'svalue': (power)}
+                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionPannel4, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
  
         #upload values to Domoticz for inverter 2
@@ -137,10 +135,10 @@ while True:
                             else :
                                 getVars = {'type' : 'command', 'param' : 'switchlight', 'idx': SwitchInverter2, 'switchcmd': 'Off'}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars))
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter2Pannel1, 'svalue': (power)}
+                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionPannel3, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
                         elif (i == 1) and (x == 1) :
-                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionInverter2Pannel2, 'svalue': (power)}
+                            getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': ConsumptionPannel4, 'svalue': (power)}
                             webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
  
         except Exception as err:
