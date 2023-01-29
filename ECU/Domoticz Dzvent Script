@@ -1,0 +1,35 @@
+return 
+{
+    on = 
+    {
+        timer = { 'every 5 minutes' }
+    },
+    
+    execute = function(dz)
+        
+        dz.utils.osExecute("python3 /home/YOURNAME/domoticz/scripts/python/ECU/YOURFILE.py") --YOURFILE = ECU-C-R.py or ECU_B.py
+        
+        local function osCommand(cmd)
+            if dz == nil then dz = domoticz end -- make sure dz is declared as domoticz object if not already done earlier 
+            dz.log('Executing Command: ' .. cmd,dz.LOG_DEBUG)
+
+            local fileHandle = assert(io.popen(cmd .. ' 2>&1 || echo ::ERROR::', 'r'))
+            local commandOutput = assert(fileHandle:read('*a'))
+            local returnTable = {fileHandle:close()}
+
+            if commandOutput:find '::ERROR::' then     -- something went wrong
+               dz.log('Error ==>> ' .. tostring(commandOutput:match('^(.*)%s+::ERROR::') or ' ... but no error message ' ) ,dz.LOG_ERROR)
+            else -- all is fine!!
+                dz.log('ReturnCode: ' .. returnTable[3] .. '\ncommandOutput:\n' .. commandOutput, dz.LOG_DEBUG)
+            end
+
+            return commandOutput,returnTable[3] -- rc[3] contains returnCode
+        end
+        
+        local result, rc = osCommand('ls -l')
+        
+        --dz.log('return Code: ' .. rc  ,dz.LOG_FORCE)
+        --dz.log('Result: \n' .. result,dz.LOG_FORCE)
+        
+    end
+}
