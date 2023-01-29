@@ -4,7 +4,8 @@ This is an integration for [Domoticz](https://domoticz.com/) that adds support f
 
 The installation procedure is based on [bjorn-meiger](https://www.bjorn-meijer.nl/en/2021/05/01/realtime-readout-apsystems-in-domoticz/)
 
-Support 4 inverter on ECU C or R. Only 2 inverter on ECU B
+Support 4 inverters on ECU C or R. 
+Support 2 inverters or 4 pannels on ECU B
 
 ## Add dummy sensors in Domoticz
 * Create a Dummy sensor in Domoticz and call it 'Virtual switches' or another clear name.
@@ -30,13 +31,12 @@ To run the python scripts on the Raspberry Pi Python 3.x to be installed.
 
     idx with your custom sensor values
 
-## Start script
+## Start script for test
 * If ECU C or R : Start the script with the command python3 /scripts/python/ECU/ECU-C-R.py
 * If ECU B : Start the script with the command python3 /scripts/python/ECU/ECU-B.py
 
-## Auto start
-To have the script start automatically after every reboot of the Raspberry Pi, add the following line in crontab
-* sudo crontab -e
-* If ECU C or R Add : @reboot python3 /home/USER/domoticz/scripts/python/ECU/ECU-C-R.py (Change USER)
-* If ECU B Add : @reboot python3 /home/USER/domoticz/scripts/python/ECU/ECU-B.py (Change USER)
-* Reboot the pi
+## Auto start every X minutes
+To have the script start automatically every x minutes, add the following line in YOURDOMOTICZIP/#/Events
+* Add Domoticz Dzvent Script and edit line "python3 /home/YOURNAME/domoticz/scripts/python/ECU/YOURFILE.py"
+* To avoid overloading the ECU unnecessarily, it is possible to trigger the script only during daytime by modifying the timer : 'at daytime every 5 minutes'
+* Press ON and save file
