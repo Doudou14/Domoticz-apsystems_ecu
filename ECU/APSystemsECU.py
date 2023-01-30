@@ -34,7 +34,7 @@ class APSystemsECU:
         self.cmd_attempts = 3
 
         # how big of a buffer to read at a time from the socket
-        self.recv_size = 4096
+        self.recv_size = 1024
 
         # how long to wait between socket open/closes
         self.socket_sleep_time = 2.0
@@ -94,68 +94,37 @@ class APSystemsECU:
         return self.read_buffer
 
     async def async_send_read_from_socket(self, cmd):
-        current_attempt = 0
-        while current_attempt < self.cmd_attempts:
-            current_attempt += 1
-
-            self.writer.write(cmd.encode('utf-8'))
-            await self.writer.drain()
-
-            try:
-                return await asyncio.wait_for(self.async_read_from_socket(), 
-                    timeout=self.timeout)
-
-            except asyncio.TimeoutError as err:
-                _LOGGER.warning(f"Timeout after {self.timeout}s waiting or ECU data cmd={cmd.rstrip()}. Closing socket and trying again try {current_attempt} of {self.cmd_attempts}")
-                await self.async_reopen_socket()
-                pass
- 
-            except APSystemsInvalidData as err:
-                _LOGGER.warning(f"Invalid data from ECU after issuing cmd={cmd.rstrip()} error={err}. Closing socket and trying again try {current_attempt} of {self.cmd_attempts}")
-                await self.async_reopen_socket()
-                pass
-                
-            except Exception as err:
-                _LOGGER.warning(f"Unkonwn error from ECU after issuing cmd={cmd.rstrip()} error={err}. Closing socket and trying again try {current_attempt} of {self.cmd_attempts}")
-                await self.async_reopen_socket()
-                pass
-
-        await self.async_close_socket()
-        error = f"Incomplete data from ECU after {current_attempt} attempts, cmd='{cmd.rstrip()}' data={self.read_buffer}"
-        self.add_error(error)
-        raise APSystemsInvalidData(error)
+        self.writer.write(cmd.encode('utf-8'))
+        await self.writer.drain()
+        try:
+            return await asyncio.wait_for(self.async_read_from_socket(), timeout=self.timeout)
+        except asyncio.TimeoutError as err:
+            await self.async_close_socket()
+            msg = "Timeout after {self.timeout}s waiting or ECU data cmd={cmd.rstrip()}. Closing socket."
+            self.add_error(msg)
+            raise APSystemsInvalidData(error)
 
     async def async_close_socket(self):
         if self.socket_open:
+            await asyncio.sleep(self.socket_sleep_time)  
             self.writer.close()
             await self.writer.wait_closed()
             self.socket_open = False
 
-    async def async_reopen_socket(self):
-        await self.async_close_socket()
-
-        # sleep X seconds before re-opening the socket
-        await asyncio.sleep(self.socket_sleep_time)
-
-        return await self.async_open_socket()
-
     async def async_open_socket(self):
         _LOGGER.debug(f"Connecting to ECU on {self.ipaddr} {self.port}")
+        await asyncio.sleep(self.socket_sleep_time)
         self.reader, self.writer = await asyncio.open_connection(self.ipaddr, self.port)
         _LOGGER.debug(f"Connected to ECU {self.ipaddr} {self.port}")
         self.socket_open = True
 
 
     async def async_query_ecu(self):
-
         await self.async_open_socket()
-
         cmd = self.ecu_query
         self.ecu_raw_data = await self.async_send_read_from_socket(cmd)
         await self.async_close_socket()
-
         self.process_ecu_data()
-
         if self.lifetime_energy == 0:
             await self.async_close_socket()
             error = f"ECU returned 0 for lifetime energy, raw data={self.ecu_raw_data}"
@@ -163,19 +132,17 @@ class APSystemsECU:
             raise APSystemsInvalidData(error)
 
         # the ECU likes the socket to be closed and re-opened between commands
-        await self.async_reopen_socket()
-
+        await self.async_open_socket()
         cmd = self.inverter_query_prefix + self.ecu_id + self.inverter_query_suffix
         self.inverter_raw_data = await self.async_send_read_from_socket(cmd)
+        await self.async_close_socket()
 
         # the ECU likes the socket to be closed and re-opened between commands
-        await self.async_reopen_socket()
-
+        await self.async_open_socket()
         cmd = self.inverter_signal_prefix + self.ecu_id + self.inverter_signal_suffix
         self.inverter_raw_signal = await self.async_send_read_from_socket(cmd)
 
         await self.async_close_socket()
-
         data = self.process_inverter_data()
         data["ecu_id"] = self.ecu_id
         data["today_energy"] = self.today_energy
@@ -183,36 +150,6 @@ class APSystemsECU:
         data["current_power"] = self.current_power
         data["qty_of_inverters"] = self.qty_of_inverters
         data["qty_of_online_inverters"] = self.qty_of_online_inverters
-        return(data)
-    
-    def query_ecu(self):
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((self.ipaddr,self.port))
-
-        sock.sendall(self.ecu_query.encode('utf-8'))
-        self.ecu_raw_data = sock.recv(self.recv_size)
-
-        self.process_ecu_data()
-
-        cmd = self.inverter_query_prefix + self.ecu_id + self.inverter_query_suffix
-        sock.sendall(cmd.encode('utf-8'))
-        self.inverter_raw_data = sock.recv(self.recv_size)
-
-        cmd = self.inverter_signal_prefix + self.ecu_id + self.inverter_signal_suffix
-        sock.sendall(cmd.encode('utf-8'))
-        self.inverter_raw_signal = sock.recv(self.recv_size)
-
-        sock.shutdown(socket.SHUT_RDWR)
-        sock.close()
-
-        data = self.process_inverter_data()
-
-        data["ecu_id"] = self.ecu_id
-        data["today_energy"] = self.today_energy
-        data["lifetime_energy"] = self.lifetime_energy
-        data["current_power"] = self.current_power
-
         return(data)
  
     def aps_int(self, codec, start):
