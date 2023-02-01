@@ -106,14 +106,12 @@ class APSystemsECU:
 
     async def async_close_socket(self):
         if self.socket_open:
-            await asyncio.sleep(self.socket_sleep_time)  
             self.writer.close()
             await self.writer.wait_closed()
             self.socket_open = False
 
     async def async_open_socket(self):
         _LOGGER.debug(f"Connecting to ECU on {self.ipaddr} {self.port}")
-        await asyncio.sleep(self.socket_sleep_time)
         self.reader, self.writer = await asyncio.open_connection(self.ipaddr, self.port)
         _LOGGER.debug(f"Connected to ECU {self.ipaddr} {self.port}")
         self.socket_open = True
@@ -132,12 +130,14 @@ class APSystemsECU:
             raise APSystemsInvalidData(error)
 
         # the ECU likes the socket to be closed and re-opened between commands
+        await asyncio.sleep(self.socket_sleep_time) 
         await self.async_open_socket()
         cmd = self.inverter_query_prefix + self.ecu_id + self.inverter_query_suffix
         self.inverter_raw_data = await self.async_send_read_from_socket(cmd)
         await self.async_close_socket()
 
         # the ECU likes the socket to be closed and re-opened between commands
+        await asyncio.sleep(self.socket_sleep_time)  
         await self.async_open_socket()
         cmd = self.inverter_signal_prefix + self.ecu_id + self.inverter_signal_suffix
         self.inverter_raw_signal = await self.async_send_read_from_socket(cmd)
