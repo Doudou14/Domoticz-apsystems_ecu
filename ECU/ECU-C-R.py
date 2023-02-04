@@ -75,7 +75,7 @@ if (float(today_energy) >= 0 or float(current_power) >= 0):
    getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': SolarGeneration, 'svalue': (generated_energy)}
    webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars))
    print(url + urllib.parse.urlencode(getVars) + (puntcomma) + '0')
-getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': Timestamp, 'svalue': data.get('timestamp')}
+getVars = {'type' : 'command', 'param' : 'udevice', 'nvalue' : 0, 'idx': Timestamp, 'svalue': data.get('timestamp') + ' / ' + data.get('ecu_firmware')}
 webUrl = urllib.request.urlopen(url + urllib.parse.urlencode(getVars))
 #print(url + urllib.parse.urlencode(getVars))
 #inverter values
