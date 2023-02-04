@@ -49,6 +49,7 @@ class APSystemsECU:
         self.inverter_byte_start = 26
 
         self.ecu_id = None
+        self.ecu_firmware = None
         self.qty_of_inverters = 0
         self.qty_of_online_inverters = 0
         self.lifetime_energy = 0
@@ -145,6 +146,7 @@ class APSystemsECU:
         await self.async_close_socket()
         data = self.process_inverter_data()
         data["ecu_id"] = self.ecu_id
+        data["ecu_firmware"] = self.firmware
         data["today_energy"] = self.today_energy
         data["lifetime_energy"] = self.lifetime_energy
         data["current_power"] = self.current_power
