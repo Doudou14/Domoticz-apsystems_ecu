@@ -20,6 +20,13 @@ Add dummy sensor in Domoticz
 * Create a virtual sensor of type 'Custom Sensor' and name it 'Inverter [number inverter] – Frequency' and add '%' on 'Axis Label' . Repeat this step for the number of microinverters you have.
 * Note all idx http://IP-Domoticz:8080/#/Devices
 
+* ##ouvrir les ports dans domoticz
+* Aller dans Paramètres
+* aller dans sécurité
+* ajouté l'ip de votre ecu et du rasperry
+* ou plus simplement, votre adresse reseau en mettant *
+* par exemple: 192.168.1.*
+
 ## Install Plugin
 To run the python scripts on the Raspberry Pi Python 3.x to be installed.
 * Place APSystemECU.py and ECU-C-R.py or ECU-B (choose file from your ECU model) in your Domoticz folder under scripts/python/ECU
