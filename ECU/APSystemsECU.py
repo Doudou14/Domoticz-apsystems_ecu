@@ -332,7 +332,7 @@ class APSystemsECU:
             "power" : power,
             "voltage" : voltages
         }
-        return (output, cnt2)
+        return (output, cnt2 + 27)
 
     def process_qs1(self, data, cnt2):
         power = []
@@ -348,7 +348,7 @@ class APSystemsECU:
             "power" : power,
             "voltage" : voltages
         }
-        return (output, cnt2)
+        return (output, cnt2 + 23)
 
     def process_yc600_ds3(self, data, cnt2):
         power = []
@@ -363,7 +363,7 @@ class APSystemsECU:
             "power" : power,
             "voltage" : voltages,
         }
-        return (output, cnt2)
+        return (output, cnt2 + 21)
 
     def add_error(self, error):
         timestamp = datetime.datetime.now()
