@@ -67,6 +67,8 @@ print('Number inverter: ' + str(Inverter_qty))
 for i in range(Inverter_qty):
    Inverter = list(inverters.keys())[i]
    print('Inverter Id: ' + Inverter)
+   InverterOnline = data['inverters'][Inverter]['online']
+   print('Online: ' + str(InverterOnline))
    InverterFrequency = data['inverters'][Inverter]['frequency']
    print('Frequency: ' + str(InverterFrequency) + ' Hz')
    InverterSignal = data['inverters'][Inverter]['signal']
